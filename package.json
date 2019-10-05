@@ -1,0 +1,9 @@
+{
+    "name": "vendingmachine",
+    "version": "1.0.0",
+    "dependencies": {
+      "openzeppelin-solidity": "^2.3.0",
+      "zeppelin-solidity": "^1.12.0"
+    }
+  }
+  
