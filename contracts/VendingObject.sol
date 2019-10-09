@@ -3,44 +3,45 @@ import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./IPropertyNames.sol";
+import "./IPropertyGenerator.sol";
+import './IVendingObjectCreator.sol';
+
 // import "openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol";
 
-contract VendingObject is ERC721Full {
+contract VendingObject is ERC721Full, IVendingObjectCreator {
 
     using SafeMath for uint256;
-
-    uint MAX_PROPERTIES = 16;
 
     struct Object {
         mapping(uint256 => uint256) properties;
     }
 
     IPropertyNames public propertyNames;
+    IPropertyGenerator public propertyGenerator;
 
     mapping(uint256 => Object) internal objects;
     uint256 tokenIdCounter;
 
-    constructor(IPropertyNames _propertyNames) public {
+    constructor(IPropertyNames _propertyNames, IPropertyGenerator _propertyGenerator) public {
         propertyNames = _propertyNames;
+        propertyGenerator = _propertyGenerator;
     }
 
-    // TODO need to make this more efficient so that we can just write this number matrix to storage
-    function mintObject(address creator, uint256[] memory names, uint256[] memory values)
+    function mintObject(address _creator)
         public
         returns(uint256 _tokenId) {
 
         require(creator != address(0x0), 'Invalid creator');
-        require(names.length < MAX_PROPERTIES, 'Too many properties');
-        require(names.length == values.length, 'Mismatch in names and properties');
+        bytes16[] memory names = propertyNames.propertyNames();
 
         Object memory tmpObj = Object();
         objects[tokenIdCounter.add(1)] = tmpObj;
         Object storage obj = objects[tokenIdCounter];
         for (uint256 i = 0; i < names.length; i++) {
-            obj.properties[names[i]] = values[i];
+            obj.properties[names[i]] = propertyGenerator.generate(i);
         }
 
-        _mint(creator, tokenIdCounter);
+        _mint(_creator, tokenIdCounter);
 
         return tokenIdCounter;
     }
@@ -70,5 +71,17 @@ contract VendingObject is ERC721Full {
         }
 
         return values;
+    }
+
+    function setPropertyGenerator(IPropertyGenerator _propertyGenerator)
+        public
+        onlyOwner {
+        propertyGenerator = _propertyGenerator;
+    }
+
+    function setPropertyNames(IPropertyNames _propertyNames)
+        public
+        onlyOwner {
+        propertyNames = _propertyNames;
     }
 }
