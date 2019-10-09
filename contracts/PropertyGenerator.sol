@@ -7,7 +7,7 @@ contract PropertyGenerator is IPropertyGenerator, Ownable {
     constructor() public {
     }
 
-    function generate(address _sender, uint256 name)
+    function generate(uint256 name)
         external
         returns (uint256 value) {
 
