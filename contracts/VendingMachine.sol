@@ -1,20 +1,34 @@
 pragma solidity ^0.5.0;
 import '@openzeppelin/contracts/ownership/Ownable.sol';
-import './IPropertyGenerator.sol';
+import './IVendingObjectCreator.sol';
 
 contract VendingMachine is Ownable {
 
-    struct VendingObject {
-        mapping(bytes16 => uint256) properties;
+    IVendingObjectCreator public vendingObjectCreator;
+
+    constructor(IVendingObjectCreator _vendingObjectCreator)
+        public {
+
+        require(_vendingObject != address(0x0), 'Invalid address');
+        // TODO - check the validity of these interfaces
+        vendingObjectCreator = _vendingObjectCreator;
     }
 
-    IPropertyGenerator public propertyGenerator;
+    function mint()
+        public
+        payable
+        returns(uint256 tokenId) {
 
-    constructor(IPropertyGenerator _propertyGenerator) public {
-        propertyGenerator = _propertyGenerator;
+        // check payment
+        require(msg.value > 0.001 ether, 'Send more next time');
+        require(msg.sender != address(0x0), 'Invalid address');
+
+        return vendingObjectCreator.mint(msg.sender);
     }
 
-    function mint() public onlyOwner {
-
+    function setVendingObject(IVendingObjectCreator _vendingObject)
+        public
+        onlyOwner {
+        vendingObjectCreator = _vendingObjectCreator;
     }
 }
