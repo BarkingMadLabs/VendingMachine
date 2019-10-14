@@ -10,7 +10,15 @@ contract PropertyNames is IPropertyNames, Ownable {
     function propertyNames()
         external
         view
-        returns(bytes16[] memory names) {
+        returns(uint256[] memory ids, bytes16[] memory names) {
+
+        ids = new uint256[](4);
+        names = new bytes16[](4);
+
+        ids[0] = 1;
+        ids[1] = 2;
+        ids[2] = 3;
+        ids[3] = 4;
 
         names[0] = "name";
         names[1] = "age";
