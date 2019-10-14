@@ -5,5 +5,5 @@ interface IPropertyNames {
     function propertyNames()
         external
         view
-        returns(bytes16[] memory names);
+        returns(uint256[] memory ids, bytes16[] memory names);
 }
