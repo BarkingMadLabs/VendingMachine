@@ -4,6 +4,5 @@ interface IVendingObjectCreator {
 
     function mint(address _creator)
         external
-        view
         returns(uint256 _tokenId);
 }
