@@ -7,10 +7,12 @@ contract PropertyGenerator is IPropertyGenerator, Ownable {
     constructor() public {
     }
 
-    function generate(uint256 name)
+    function generate(uint256 _propertyId)
         external
         returns (uint256 value) {
 
-        return 1;
+        if(_propertyId > 0)
+            return 1;
+        return 0;
     }
 }
