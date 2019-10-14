@@ -9,7 +9,6 @@ contract VendingMachine is Ownable {
     constructor(IVendingObjectCreator _vendingObjectCreator)
         public {
 
-        require(_vendingObject != address(0x0), 'Invalid address');
         // TODO - check the validity of these interfaces
         vendingObjectCreator = _vendingObjectCreator;
     }
@@ -26,7 +25,7 @@ contract VendingMachine is Ownable {
         return vendingObjectCreator.mint(msg.sender);
     }
 
-    function setVendingObject(IVendingObjectCreator _vendingObject)
+    function setVendingObject(IVendingObjectCreator _vendingObjectCreator)
         public
         onlyOwner {
         vendingObjectCreator = _vendingObjectCreator;
