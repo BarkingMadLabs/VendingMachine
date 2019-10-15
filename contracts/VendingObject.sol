@@ -27,7 +27,9 @@ contract VendingObject is ERC721Full, Ownable, IVendingObjectCreator {
     IMetaData public metaData;
 
     mapping(uint256 => Object) internal objects;
-    uint256 tokenIdCounter;
+    uint256 public tokenIdCounter;
+
+    event test();
 
     constructor(IMetaData _metaData, IPropertyNames _propertyIds, IPropertyGenerator _propertyGenerator)
         ERC721Full("Vending Object", "VOB")
@@ -104,7 +106,7 @@ contract VendingObject is ERC721Full, Ownable, IVendingObjectCreator {
         propertyNames = _propertyIds;
     }
 
-    function setMetaDaya(IMetaData _metaData)
+    function setMetaData(IMetaData _metaData)
         public
         onlyOwner {
         metaData = _metaData;
