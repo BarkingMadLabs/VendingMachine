@@ -36,8 +36,8 @@ contract("Vending Object", async accounts => {
 
     it("should return properties", async() => {
 
-        const propertyValue = await vendingObjectInstance.property(tokenId, 1);
-        assert.isNumber(propertyValue.toNumber(), 'property value are integers');
-        assert.strictEqual(propertyValue.toNumber(), 1, 'property value should be 1');
+        let ids = [1,2,3,4];
+        const values = await vendingObjectInstance.properties(tokenId, ids);
+        assert.strictEqual(values.length, ids.length, 'we should have the same number here');
     });
 });
