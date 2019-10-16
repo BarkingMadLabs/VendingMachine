@@ -1,16 +1,17 @@
 const VendingObject = artifacts.require("./VendingObject.sol");
+const truffleAssert = require('truffle-assertions');
 
 contract("Vending Object", async accounts => {
 
-    let owner, account1, account2; 
+    let admin, account1; 
     let vendingObjectInstance;
     let tokenId;
 
-    before("should mint a token", async() => {
-        [owner, account1, account2] = accounts;
+    before("should mint a token if admin", async() => {
+        [admin, account1] = accounts;
 
         vendingObjectInstance = await VendingObject.deployed();
-        let txObj = await vendingObjectInstance.mint(account1);
+        let txObj = await vendingObjectInstance.mint(account1, {from:admin});
         assert.strictEqual(txObj.receipt.logs.length, 1);
         assert.strictEqual(txObj.logs.length, 1);
         const logTransfer = txObj.logs[0];
@@ -19,6 +20,10 @@ contract("Vending Object", async accounts => {
         assert.strictEqual(logTransfer.args.to, account1);
         tokenId = logTransfer.args.tokenId.toNumber();
         assert.isAbove(tokenId, 0, 'We need a valid token id');
+
+        let fn = vendingObjectInstance.mint(account1, {from:account1});
+        await truffleAssert.reverts(    fn, 
+                                        'WhitelistAdminRole: caller does not have the WhitelistAdmin role');
     });
 
     it("should have a uri", async () => {
