@@ -1,5 +1,5 @@
 pragma solidity ^0.5.6;
-import "@openzeppelin/contracts/ownership/Ownable.sol";
+import '@openzeppelin/contracts/access/roles/WhitelistAdminRole.sol';
 import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./IPropertyNames.sol";
@@ -14,7 +14,7 @@ import "./IMetaData.sol";
 
 // Property values would also be stored onchain but as ids that are referenced to offchain values
 
-contract VendingObject is ERC721Full, Ownable, IVendingObjectCreator {
+contract VendingObject is ERC721Full, WhitelistAdminRole, IVendingObjectCreator {
 
     using SafeMath for uint256;
 
@@ -29,8 +29,6 @@ contract VendingObject is ERC721Full, Ownable, IVendingObjectCreator {
     mapping(uint256 => Object) internal objects;
     uint256 public tokenIdCounter;
 
-    event test();
-
     constructor(IMetaData _metaData, IPropertyNames _propertyIds, IPropertyGenerator _propertyGenerator)
         ERC721Full("Vending Object", "VOB")
         public {
@@ -41,6 +39,7 @@ contract VendingObject is ERC721Full, Ownable, IVendingObjectCreator {
 
     function mint(address _creator)
         public
+        onlyWhitelistAdmin
         returns(uint256 _tokenId) {
 
         require(_creator != address(0x0), 'Invalid creator');
@@ -96,19 +95,19 @@ contract VendingObject is ERC721Full, Ownable, IVendingObjectCreator {
 
     function setPropertyGenerator(IPropertyGenerator _propertyGenerator)
         public
-        onlyOwner {
+        onlyWhitelistAdmin {
         propertyGenerator = _propertyGenerator;
     }
 
     function setPropertyNames(IPropertyNames _propertyIds)
         public
-        onlyOwner {
+        onlyWhitelistAdmin {
         propertyNames = _propertyIds;
     }
 
     function setMetaData(IMetaData _metaData)
         public
-        onlyOwner {
+        onlyWhitelistAdmin {
         metaData = _metaData;
     }
 }
