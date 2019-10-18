@@ -14,6 +14,17 @@
             "outFiles": [
                 "${workspaceRoot}/test/**/*"
             ],
+        },
+        {
+            "name": "run vending machine js test",
+            "type": "node",
+            "request": "launch",
+            "program": "/home/andy/.nvm/versions/node/v10.16.3/lib/node_modules/truffle/build/cli.bundled.js",
+            "args": ["test", "test/vendingmachine.js"],
+            "cwd": "${workspaceRoot}",
+            "outFiles": [
+                "${workspaceRoot}/test/**/*"
+            ],
         }
     ]
 }
