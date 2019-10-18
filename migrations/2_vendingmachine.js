@@ -24,5 +24,4 @@ module.exports = async function(deployer, network, accounts) {
 
   let vendingMachineInstance = await VendingMachine.deployed();
   vendingObjectInstance.addWhitelistAdmin(vendingMachineInstance.address);
-  console.log(vendingMachineInstance.address);
 }
