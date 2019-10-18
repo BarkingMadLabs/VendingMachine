@@ -107,12 +107,12 @@ contract("Vending Machine", async accounts => {
         
         let totalShares = shareHolder1Shares + shareHolder2Shares;
         
-        assert.strictEqual( (toBN(balanceOfShareHolder1).sub(toBN(balanceOfShareHolder1After))).toString(),
-                            (toBN(pricePerVendingObjectInWei).mul(toBN(shareHolder1Shares))).div(toBN(totalShares)), 
+        assert.strictEqual( (toBN(balanceOfShareHolder1After).sub(toBN(balanceOfShareHolder1))).toString(),
+                            ((toBN(pricePerVendingObjectInWei).mul(toBN(shareHolder1Shares))).div(toBN(totalShares))).toString(), 
                             'Share holder 1 should get their percentage');
 
-        assert.strictEqual( (toBN(balanceOfShareHolder2).sub(toBN(balanceOfShareHolder2After))).toString(),
-                            (toBN(pricePerVendingObjectInWei).mul(toBN(shareHolder1Shares))).div(toBN(totalShares)), 
+        assert.strictEqual( (toBN(balanceOfShareHolder2After).sub(toBN(balanceOfShareHolder2))).toString(),
+                            ((toBN(pricePerVendingObjectInWei).mul(toBN(shareHolder1Shares))).div(toBN(totalShares))).toString(), 
                             'Share holder 2 should get their percentage');
     });
 });
