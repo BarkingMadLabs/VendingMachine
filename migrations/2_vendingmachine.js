@@ -17,7 +17,10 @@ module.exports = async function(deployer, network, accounts) {
                         propertyNamesInstance.address,  
                         propertyGeneratorInstance.address);
   let vendingObjectInstance = await VendingObject.deployed();
-  await deployer.deploy(VendingMachine, vendingObjectInstance.address, web3.utils.toWei('0.001'));
+
+  let shareHolders = [accounts[0]];
+  let shareAmounts = [100];
+  await deployer.deploy(VendingMachine, shareHolders, shareAmounts, vendingObjectInstance.address, web3.utils.toWei('0.001'));
 
   let vendingMachineInstance = await VendingMachine.deployed();
   vendingObjectInstance.addWhitelistAdmin(vendingMachineInstance.address);
