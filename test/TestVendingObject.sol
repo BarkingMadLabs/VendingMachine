@@ -15,13 +15,4 @@ contract TestVendingObject {
     string memory uri = vendingObject.tokenURI(1);
     AssertString.isNotEmpty(uri, "uri should be returned");
   }
-
-  function testMint() public {
-
-    VendingObject vendingObject = VendingObject(DeployedAddresses.VendingObject());
-
-    uint256 tokenId = vendingObject.mint((address)(this));
-
-    AssertUint.isAbove(tokenId, 0, "Invalid token id");
-  }
 }
